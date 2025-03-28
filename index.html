@@ -619,6 +619,9 @@
         spinButton.disabled = true;  // 禁用旋转按钮
         message.textContent = '';
 
+
+        setupVisualizerWithParticles();  // 启动音频可视化与粒子效果
+        
         // 播放旋转及背景音效
         document.getElementById('background-music').play();
         document.getElementById('spin-sound').play();
@@ -689,7 +692,6 @@
     window.onload = function () {
         initializeReels();   // 初始化滚筒符号
         createLights();      // 创建灯光效果
-        setupVisualizerWithParticles();  // 启动音频可视化与粒子效果
 
         // 绑定旋转按钮点击事件
         document.getElementById('spin-button').addEventListener('click', spinReels);
