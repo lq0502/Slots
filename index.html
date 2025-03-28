@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>スロットゲーム</title>
     <style>
-        /* ============================================
-           页面全局样式设置
-           ============================================ */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -22,8 +19,6 @@
             background-position: center;
             color: white;
         }
-
-        /* 游戏主容器，内部元素居中 */
         .game-container {
             position: relative;
             width: 100%;
@@ -32,10 +27,6 @@
             justify-content: center;
             align-items: center;
         }
-
-        /* ============================================
-           游戏说明区域
-           ============================================ */
         .instructions {
             position: absolute;
             left: 28px;
@@ -56,7 +47,7 @@
         }
         .instructions-right {
             position: absolute;
-            right: 15px; /* 与左侧的 left: 80px 对称 */
+            right: 15px; 
             height: 351.3px;
             text-align: left;
         }
@@ -94,10 +85,6 @@
             border-radius: 5px;
             text-align: center;
         }
-
-        /* ============================================
-           老虎机显示区域
-           ============================================ */
         .slot-machine {
             position: relative;
             width: 340px;
@@ -106,15 +93,14 @@
             text-align: center;
         }
         .slot-machine h2 {
-            font-size: 30px;          /* 调整文字大小 */
-            color: white;           /* 可爱一点的颜色，例如粉色 */
+            font-size: 30px;     
+            color: white;          
             text-shadow:
                     -1px -1px 0 #000,
                     1px -1px 0 #000,
                     -1px 1px 0 #000,
-                    1px 1px 0 #000;       /* 模拟黑边效果 */
+                    1px 1px 0 #000;    
         }
-        /* 灯光效果层：覆盖老虎机区域，鼠标事件穿透 */
         .light-container {
             position: absolute;
             top: 0;
@@ -135,10 +121,6 @@
             background-color: #FFFF00;
             box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
         }
-
-        /* ============================================
-           滚筒区域样式
-           ============================================ */
         .reels-container {
             display: flex;
             justify-content: space-between;
@@ -157,18 +139,16 @@
             overflow: hidden;
             position: relative;
         }
-        /* 上方渐变遮罩 */
         .reel::before {
             content: "";
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 40%; /* 可调整高度 */
+            height: 40%; 
             background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 60%, transparent 100%);
             pointer-events: none;
         }
-        /* 下方渐变遮罩 */
         .reel::after {
             content: "";
             position: absolute;
@@ -179,7 +159,6 @@
             background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 60%, transparent 100%);
             pointer-events: none;
         }
-        /* 滚筒内滚动区域及符号样式 */
         .reel-items {
             position: absolute;
             width: 100%;
@@ -194,10 +173,6 @@
             font-size: 48px;
             box-sizing: border-box;
         }
-
-        /* ============================================
-           控制区域：旋转按钮及信息显示
-           ============================================ */
         .controls {
             display: flex;
             flex-direction: column;
@@ -213,15 +188,14 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-            box-shadow: 0 4px 0 #d4af37; /* 添加阴影效果，模拟立体感 */
+            box-shadow: 0 4px 0 #d4af37; 
         }
         .spin-button:hover {
             background-color: #FFC107;
         }
-        /* 按钮按下时 */
         .spin-button:active {
-            transform: translateY(4px); /* 模拟按下效果，按钮下移 */
-            box-shadow: none; /* 按下时移除阴影 */
+            transform: translateY(4px); 
+            box-shadow: none; 
         }
         .spin-button:disabled {
             background-color: #ccc;
@@ -241,10 +215,6 @@
             margin-left: auto;
             margin-right: auto;
         }
-
-        /* ============================================
-           音乐可视化器与粒子 canvas 样式
-           ============================================ */
         #visualizer {
             position: fixed;
             bottom: 0;
@@ -267,9 +237,6 @@
 </head>
 <body>
 <div class="game-container">
-    <!-- ===============================
-         游戏说明区域（左侧说明）
-         =============================== -->
     <div class="instructions">
         <h3>制作情報</h3>
         <ul>
@@ -285,7 +252,6 @@
         </ul>
         <h3></h3>
     </div>
-    <!-- 右侧说明区域 -->
     <div class="instructions-right">
         <h3>ハードウェア情報</h3>
         <ul>
@@ -302,12 +268,8 @@
         </ul>
         <h3></h3>
     </div>
-    <!-- ===============================
-         老虎机显示区域（右侧）
-         =============================== -->
     <div class="slot-machine">
         <h2>じじのスロット</h2>
-        <!-- 滚筒容器 -->
         <div class="reels-container">
             <div class="reel" id="reel1">
                 <div class="reel-items" id="reel-items1"></div>
@@ -319,40 +281,22 @@
                 <div class="reel-items" id="reel-items3"></div>
             </div>
         </div>
-        <!-- 控制按钮与消息显示 -->
         <div class="controls">
             <button class="spin-button" id="spin-button">PUSH</button>
             <div class="message" id="message"></div>
         </div>
         <img src="cat.gif" alt="gif猫" class="cat-gif">
-        <!-- 灯光效果层 -->
         <div class="light-container" id="light-container"></div>
     </div>
 </div>
-
-<!-- 音频可视化器和粒子效果 canvas -->
 <canvas id="visualizer"></canvas>
 <canvas id="particle-canvas"></canvas>
-
-<!-- ============================================
-     脚本代码：各模块分组及详细注释
-     ============================================ -->
 <script>
-    /* ======================================================
-       全局变量及初始设置
-       ====================================================== */
-    // 定义所有可能出现的符号
     const symbols = ['🍒', '🍋', '🍊', '🍉', '🔔', '💎', '7️⃣'];
-
-    /* ======================================================
-       滚筒初始化模块
-       作用：生成大量随机符号，形成滚筒滚动效果
-       ====================================================== */
     function initializeReels() {
         for (let i = 1; i <= 3; i++) {
             const reelItems = document.getElementById(`reel-items${i}`);
-            reelItems.innerHTML = ''; // 清空旧内容
-            // 生成 1000 个随机符号
+            reelItems.innerHTML = '';
             for (let j = 0; j < 1000; j++) {
                 const symbolIndex = Math.floor(Math.random() * symbols.length);
                 const reelItem = document.createElement('div');
@@ -360,24 +304,15 @@
                 reelItem.textContent = symbols[symbolIndex];
                 reelItems.appendChild(reelItem);
             }
-            // 重置初始位置
             reelItems.style.top = '0px';
         }
     }
-
-    /* ======================================================
-       灯光效果模块
-       作用：创建并控制老虎机周围的灯光动画效果
-       ====================================================== */
     function createLights() {
         const lightContainer = document.getElementById('light-container');
         const lights = [];
-        const horizontalLights = 16;  // 水平灯光数量
-        const verticalLights = 6;     // 垂直灯光数量
-        // 灯光分布区域参数
+        const horizontalLights = 16;  
+        const verticalLights = 6;    
         const rectWidth = 333, rectHeight = 115.7, offsetX = 15, offsetY = 110;
-
-        // 创建顶部灯光（从左到右）
         for (let i = 0; i < horizontalLights; i++) {
             const light = document.createElement('div');
             light.className = 'light';
@@ -386,7 +321,6 @@
             lightContainer.appendChild(light);
             lights.push(light);
         }
-        // 右侧灯光（从上到下）
         for (let i = 0; i < verticalLights; i++) {
             const light = document.createElement('div');
             light.className = 'light';
@@ -395,7 +329,6 @@
             lightContainer.appendChild(light);
             lights.push(light);
         }
-        // 底部灯光（从右到左）
         for (let i = 0; i < horizontalLights; i++) {
             const light = document.createElement('div');
             light.className = 'light';
@@ -404,7 +337,6 @@
             lightContainer.appendChild(light);
             lights.push(light);
         }
-        // 左侧灯光（从下到上）
         for (let i = 0; i < verticalLights; i++) {
             const light = document.createElement('div');
             light.className = 'light';
@@ -414,18 +346,13 @@
             lights.push(light);
         }
     }
-
-    // 灯光动画全局变量
     let currentLightIndex = 0;
     let lightInterval;
-
-    // 走马灯效果：依次点亮灯光
     function startLightChase() {
         const lights = document.querySelectorAll('.light');
         if (lightInterval) clearInterval(lightInterval);
-        // 清除所有灯光激活状态
         lights.forEach(light => light.classList.remove('active'));
-        const activeCount = 10;  // 同时激活的灯数量
+        const activeCount = 10;  
         lightInterval = setInterval(() => {
             lights.forEach(light => light.classList.remove('active'));
             for (let i = 0; i < activeCount; i++) {
@@ -434,16 +361,12 @@
             currentLightIndex = (currentLightIndex + 1) % lights.length;
         }, 40);
     }
-
-    // 停止走马灯效果
     function stopLightChase() {
         if (lightInterval) {
             clearInterval(lightInterval);
             lightInterval = null;
         }
     }
-
-    // 二等奖灯光效果：交替闪烁
     function secondPrizeLights() {
         const lights = document.querySelectorAll('.light');
         stopLightChase();
@@ -459,8 +382,6 @@
             }
         }, 300);
     }
-
-    // 一等奖灯光效果：先整体闪烁，再顺时针点亮连续灯光
     function firstPrizeLights() {
         const lights = document.querySelectorAll('.light');
         stopLightChase();
@@ -470,7 +391,6 @@
             counter++;
             if (counter > 20) {
                 clearInterval(excitingInterval);
-                // 第二阶段：顺时针依次点亮连续5个灯
                 let secondCounter = 0, activeLightIndex = 0;
                 const chaseInterval = setInterval(() => {
                     lights.forEach(light => light.classList.remove('active'));
@@ -487,22 +407,13 @@
             }
         }, 150);
     }
-
-    // 重置所有灯光为关闭状态
     function resetLights() {
         document.querySelectorAll('.light').forEach(light => light.classList.remove('active'));
     }
-
-    /* ======================================================
-       音频频谱可视化与粒子效果模块
-       ====================================================== */
-    // 粒子效果设置及相关方法 -----------------------------
     const particleCanvas = document.getElementById('particle-canvas');
     const pCtx = particleCanvas.getContext('2d');
     particleCanvas.width = window.innerWidth;
     particleCanvas.height = window.innerHeight;
-
-    // 粒子构造函数（包括位置、速度、大小、颜色及生命）
     function Particle(x, y, dx, dy, size, color, life) {
         this.x = x;
         this.y = y;
@@ -510,7 +421,7 @@
         this.dy = dy;
         this.size = size;
         this.color = color;
-        this.life = life; // 生命帧数
+        this.life = life; 
         this.opacity = 1;
     }
     Particle.prototype.update = function() {
@@ -528,11 +439,8 @@
         ctx.fill();
         ctx.restore();
     };
-
     let particles = [];
-    let particleCooldown = 0; // 控制粒子生成的冷却
-
-    // 在指定位置生成一波粒子
+    let particleCooldown = 0; 
     function spawnParticles(x, y) {
         const count = 30;
         for (let i = 0; i < count; i++) {
@@ -546,8 +454,6 @@
             particles.push(new Particle(x, y, dx, dy, size, color, life));
         }
     }
-
-    // 更新并绘制所有粒子
     function updateParticles() {
         pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
         for (let i = particles.length - 1; i >= 0; i--) {
@@ -559,8 +465,6 @@
             }
         }
     }
-
-    // 音频可视化与粒子联动：当音量超过阈值时触发粒子效果
     function setupVisualizerWithParticles() {
     try {
         const audio = document.getElementById('background-music');
@@ -612,29 +516,23 @@
     }
 }
 
-    /* ======================================================
-       旋转及中奖判定逻辑模块
-       ====================================================== */
     function spinReels() {
         const spinButton = document.getElementById('spin-button');
         const message = document.getElementById('message');
-        spinButton.disabled = true;  // 禁用旋转按钮
+        spinButton.disabled = true;  
         message.textContent = '';
 
-
-        setupVisualizerWithParticles();  // 启动音频可视化与粒子效果
+        setupVisualizerWithParticles();  
         
-        // 播放旋转及背景音效
         document.getElementById('background-music').play();
         document.getElementById('spin-sound').play();
         document.getElementById('reel-spin-sound').play();
 
-        startLightChase();  // 开始灯光走马灯效果
+        startLightChase();  
 
         const stopPositions = [];
         const results = [];
 
-        // 为每个滚筒随机生成停止位置与结果
         for (let i = 1; i <= 3; i++) {
             const reelItems = document.getElementById(`reel-items${i}`);
             const totalItems = reelItems.children.length;
@@ -642,13 +540,12 @@
             stopPositions.push(randomPosition);
             const resultIndex = Math.abs(Math.floor(randomPosition / 100));
             results.push(reelItems.children[resultIndex].textContent);
-            // 设置不同延时，让滚筒依次停止
+ 
             setTimeout(() => {
                 reelItems.style.top = `${stopPositions[i - 1]}px`;
             }, i * 500);
         }
 
-        // 所有滚筒停止后进行中奖判定
         setTimeout(() => {
             stopLightChase();
             checkResults(results);
@@ -656,13 +553,12 @@
         }, 4000);
     }
 
-    // 根据滚筒结果判断中奖情况并触发相应效果
     function checkResults(results) {
         const message = document.getElementById('message');
-        // 三个符号相同，中奖
+
         if (results[0] === results[1] && results[1] === results[2]) {
             document.getElementById('win-sound').play();
-            // 判断是否为特别大奖（💎 或 7️⃣）
+   
             if (results[0] === '💎' || results[0] === '7️⃣') {
                 message.textContent = '恭喜你赢得一等大奖！';
                 message.style.color = '#FF0000';
@@ -672,14 +568,14 @@
             }
             firstPrizeLights();
         }
-        // 两个相同，二等奖
+
         else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
             document.getElementById('win-alert-sound').play();
             message.textContent = 'おめでとう！二等賞をゲット！';
             message.style.color = '#FFA500';
             secondPrizeLights();
         }
-        // 未中奖
+
         else {
             document.getElementById('lose-beeps-sound').play();
             message.textContent = '残念！またチャレンジしてね！';
@@ -688,16 +584,11 @@
         }
     }
 
-    /* ======================================================
-       页面加载及事件绑定
-       ====================================================== */
     window.onload = function () {
-        initializeReels();   // 初始化滚筒符号
-        createLights();      // 创建灯光效果
+        initializeReels();   
+        createLights();    
 
-        // 绑定旋转按钮点击事件
         document.getElementById('spin-button').addEventListener('click', spinReels);
-        // 绑定空格键事件，触发旋转并阻止默认行为
         document.addEventListener('keydown', function (e) {
             if (e.code === 'Space') {
                 e.preventDefault();
@@ -707,9 +598,6 @@
     };
 </script>
 
-<!-- ============================================
-     音效文件加载
-     ============================================ -->
 <audio id="background-music" src="background-music.mp3"></audio>
 <audio id="spin-sound" src="spin.mp3"></audio>
 <audio id="reel-spin-sound" src="reel-spin.mp3"></audio>
