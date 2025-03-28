@@ -562,6 +562,7 @@
 
     // 音频可视化与粒子联动：当音量超过阈值时触发粒子效果
     function setupVisualizerWithParticles() {
+    try {
         const audio = document.getElementById('background-music');
         const canvas = document.getElementById('visualizer');
         const ctx = canvas.getContext('2d');
@@ -583,7 +584,6 @@
             requestAnimationFrame(draw);
             analyser.getByteFrequencyData(dataArray);
 
-            // 清除频谱画布
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const barWidth = canvas.width / bufferLength;
             let barHeight, x = 0, sum = 0;
@@ -595,7 +595,6 @@
                 sum += dataArray[i];
             }
             const average = sum / bufferLength;
-            // 当平均音量超过阈值时生成粒子
             if (particleCooldown <= 0 && average > 92) {
                 const spawnX = Math.random() * particleCanvas.width;
                 const spawnY = Math.random() * (particleCanvas.height / 2);
@@ -608,7 +607,10 @@
             updateParticles();
         }
         draw();
+    } catch (error) {
+        console.error("setupVisualizerWithParticles error: ", error);
     }
+}
 
     /* ======================================================
        旋转及中奖判定逻辑模块
