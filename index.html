@@ -237,6 +237,7 @@
 </head>
 <body>
 <div class="game-container">
+    <!--
     <div class="instructions">
         <h3>制作情報</h3>
         <ul>
@@ -268,8 +269,9 @@
         </ul>
         <h3></h3>
     </div>
+    -->
     <div class="slot-machine">
-        <h2>じじのスロット</h2>
+        <h2>LQのスロット</h2>
         <div class="reels-container">
             <div class="reel" id="reel1">
                 <div class="reel-items" id="reel-items1"></div>
@@ -521,8 +523,8 @@
         const message = document.getElementById('message');
         spinButton.disabled = true;  
         message.textContent = '';
-
-        setupVisualizerWithParticles();  
+        
+        //setupVisualizerWithParticles(); // 
         
         document.getElementById('background-music').play();
         document.getElementById('spin-sound').play();
